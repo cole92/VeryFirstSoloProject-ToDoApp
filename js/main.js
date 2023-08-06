@@ -42,25 +42,28 @@ const getFromLocalStorage = () => {
         renderTodos(todos)
     }
 }
-// Calling the function 'getFromLocalStorage' upon page load to display the saved notes.
-getFromLocalStorage()
-
 const renderTodos = todosArray => {
-
+// First, we clear all items in the list to avoid duplicates.
     todoItemsList.innerHTML = '' ;
-
+// Next, we loop through each todo in the todosArray.
     todosArray.forEach(todo => {
-
+// Create a new list item (li) for each todo.
         const li = document.createElement('li');
         li.setAttribute('class', 'item');
         li.setAttribute('data-key', todo.id);
-
+// Check if the todo is completed, and add the 'checked' class if it is.
         if (todo.completed) {
             li.classList.add('checked');
         }
-
+// Add the content of the li element, including the checkbox, todo name, and delete button.
         li.innerHTML = `
-        
-        `
-    })
-}
+        <input type="checkbox" class="checkbox" ${todo.completed ? 'checked' : ''}>
+        ${todo.name}
+        <button class="delete-button">X</button>
+        `;
+// Add the li element to the todoItemsList.
+        todoItemsList.appendChild(li);
+    });
+};
+// Calling the function 'getFromLocalStorage' upon page load to display the saved notes.
+getFromLocalStorage()
