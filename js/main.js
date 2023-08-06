@@ -23,3 +23,44 @@ const addTodo = item => {
         alert ('Please enter some data!')
     }
 }
+// Function for adding notes to local storage.
+const addToLocalStorage = todosArray => {
+// Converting the array of notes into JSON format and storing it in local storage under the key 'todos'.
+    localStorage.setItem('todos', JSON.stringify(todosArray))
+// Calling the function to display notes on the screen to refresh the display after adding a new note.
+    renderTodos(todosArray)
+}
+// Function for loading notes from local storage.
+const getFromLocalStorage = () => {
+// Retrieving the value under the key 'todos' from local storage.
+    const reference = localStorage.getItem('todos');
+// Checking if there is a value under that key.
+    if (reference) {
+// If it exists, we parse the JSON format into an array and assign it to the variable 'todos'.
+        todos = JSON.parse(reference);
+// Calling the function to display notes on the screen to show the saved notes.
+        renderTodos(todos)
+    }
+}
+// Calling the function 'getFromLocalStorage' upon page load to display the saved notes.
+getFromLocalStorage()
+
+const renderTodos = todosArray => {
+
+    todoItemsList.innerHTML = '' ;
+
+    todosArray.forEach(todo => {
+
+        const li = document.createElement('li');
+        li.setAttribute('class', 'item');
+        li.setAttribute('data-key', todo.id);
+
+        if (todo.completed) {
+            li.classList.add('checked');
+        }
+
+        li.innerHTML = `
+        
+        `
+    })
+}
