@@ -106,4 +106,3 @@ todoItemsList.addEventListener('click', function(event){
         }
     }
 });
-
