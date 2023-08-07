@@ -41,26 +41,69 @@ const getFromLocalStorage = () => {
 // Calling the function to display notes on the screen to show the saved notes.
         renderTodos(todos)
     }
-}
-// Calling the function 'getFromLocalStorage' upon page load to display the saved notes.
-getFromLocalStorage()
-
+};
 const renderTodos = todosArray => {
-
+// First, we clear all items in the list to avoid duplicates.
     todoItemsList.innerHTML = '' ;
-
+// Next, we loop through each todo in the todosArray.
     todosArray.forEach(todo => {
-
+// Create a new list item (li) for each todo.
         const li = document.createElement('li');
         li.setAttribute('class', 'item');
         li.setAttribute('data-key', todo.id);
-
+// Check if the todo is completed, and add the 'checked' class if it is.
         if (todo.completed) {
             li.classList.add('checked');
         }
-
+// Add the content of the li element, including the checkbox, todo name, and delete button.
         li.innerHTML = `
-        
-        `
-    })
-}
+        <input type="checkbox" class="checkbox" ${todo.completed ? 'checked' : ''}>
+        ${todo.name}
+        <button class="delete-button">X</button>
+        `;
+// Add the li element to the todoItemsList.
+        todoItemsList.appendChild(li);
+    });
+};
+// Calling the function 'getFromLocalStorage' upon page load to display the saved notes.
+getFromLocalStorage()
+
+// Add event listener to the todo items list to handle checkbox clicks
+todoItemsList.addEventListener('click', function(event) {
+    // Check if the clicked element has the class 'checkbox'
+    if (event.target.classList.contains('checkbox')) {
+        // Get the unique identifier (data-key) of the clicked todo item
+        const itemKey = event.target.parentElement.getAttribute('data-key');
+        // Find the todo item in the array using its id
+        const foundTodo = todos.find(todo => todo.id === parseInt(itemKey));
+        // If the todo item is found
+        if (foundTodo) {
+            // Toggle the 'completed' status of the todo item
+            foundTodo.completed = !foundTodo.completed;
+            // Update the local storage with the modified todos array
+            addToLocalStorage(todos);
+            // Re-render the todo items on the screen to reflect changes
+            renderTodos(todos);
+        }
+    }
+});
+
+todoItemsList.addEventListener('click', function(event){
+    // Check if the clicked element has the class 'delete-button'
+    if (event.target.classList.contains('delete-button')) {
+        // Get the data-key attribute of the parent element
+        const itemKey = event.target.parentElement.getAttribute('data-key');
+        // Find the index of the task in the 'todos' array
+        const foundIndex = todos.findIndex(todo => todo.id === parseInt(itemKey));
+        // Check if the task was found
+        if (foundIndex !== -1) {
+            // Remove the task from the 'todos' array
+            todos.splice(foundIndex, 1);
+            // Update the local storage
+            addToLocalStorage(todos)
+            // Refresh the display
+            renderTodos(todos)
+        }
+    }
+});
+
