@@ -57,36 +57,10 @@ const renderTodos = todosArray => {
         }
 // Add the content of the li element, including the checkbox, todo name, and delete button.
         li.innerHTML = `
-        <input type="checkbox" class="checkbox" ${todo.completed ? 'checked' : ''}>
-        ${todo.name}
-        <button class="delete-button">X</button>
-        `;
-// Add the li element to the todoItemsList.
-        todoItemsList.appendChild(li);
-    });
-};
-// Calling the function 'getFromLocalStorage' upon page load to display the saved notes.
-getFromLocalStorage()
-
-// Add event listener to the todo items list to handle checkbox clicks
-todoItemsList.addEventListener('click', function(event) {
-    // Check if the clicked element has the class 'checkbox'
-    if (event.target.classList.contains('checkbox')) {
-        // Get the unique identifier (data-key) of the clicked todo item
-        const itemKey = event.target.parentElement.getAttribute('data-key');
-        // Find the todo item in the array using its id
-        const foundTodo = todos.find(todo => todo.id === parseInt(itemKey));
-        // If the todo item is found
-        if (foundTodo) {
-            // Toggle the 'completed' status of the todo item
-            foundTodo.completed = !foundTodo.completed;
-            // Update the local storage with the modified todos array
-            addToLocalStorage(todos);
-            // Re-render the todo items on the screen to reflect changes
-            renderTodos(todos);
-        }
-    }
-});
+        
+        `
+    })
+}
 
 todoItemsList.addEventListener('click', function(event){
     // Check if the clicked element has the class 'delete-button'
