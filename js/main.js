@@ -41,7 +41,7 @@ const getFromLocalStorage = () => {
 // Calling the function to display notes on the screen to show the saved notes.
         renderTodos(todos)
     }
-}
+};
 const renderTodos = todosArray => {
 // First, we clear all items in the list to avoid duplicates.
     todoItemsList.innerHTML = '' ;
@@ -67,3 +67,42 @@ const renderTodos = todosArray => {
 };
 // Calling the function 'getFromLocalStorage' upon page load to display the saved notes.
 getFromLocalStorage()
+
+// Add event listener to the todo items list to handle checkbox clicks
+todoItemsList.addEventListener('click', function(event) {
+    // Check if the clicked element has the class 'checkbox'
+    if (event.target.classList.contains('checkbox')) {
+        // Get the unique identifier (data-key) of the clicked todo item
+        const itemKey = event.target.parentElement.getAttribute('data-key');
+        // Find the todo item in the array using its id
+        const foundTodo = todos.find(todo => todo.id === parseInt(itemKey));
+        // If the todo item is found
+        if (foundTodo) {
+            // Toggle the 'completed' status of the todo item
+            foundTodo.completed = !foundTodo.completed;
+            // Update the local storage with the modified todos array
+            addToLocalStorage(todos);
+            // Re-render the todo items on the screen to reflect changes
+            renderTodos(todos);
+        }
+    }
+});
+
+todoItemsList.addEventListener('click', function(event){
+    // Check if the clicked element has the class 'delete-button'
+    if (event.target.classList.contains('delete-button')) {
+        // Get the data-key attribute of the parent element
+        const itemKey = event.target.parentElement.getAttribute('data-key');
+        // Find the index of the task in the 'todos' array
+        const foundIndex = todos.findIndex(todo => todo.id === parseInt(itemKey));
+        // Check if the task was found
+        if (foundIndex !== -1) {
+            // Remove the task from the 'todos' array
+            todos.splice(foundIndex, 1);
+            // Update the local storage
+            addToLocalStorage(todos)
+            // Refresh the display
+            renderTodos(todos)
+        }
+    }
+});
